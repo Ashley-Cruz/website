@@ -38,7 +38,8 @@
                         var state = urlParams.get('state');
                         
                         // Si la solicitud fue exitosa, redirigir al usuario a la skill de Alexa
-                        window.location.href = "https://layla.amazon.com/api/skill/link/M19TM7GXDVJHTG?state=" + state + "&code=" + authToken;
+                        var redirectUrl = "https://layla.amazon.com/api/skill/link/M19TM7GXDVJHTG?state=" + state + "&code=" + authToken;
+                        window.location.href = redirectUrl;
                     } else {
                         // Si la solicitud falló, mostrar un mensaje de error
                         alert("Error al iniciar sesión. Por favor, verifica tu email y contraseña.");
