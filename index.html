@@ -3,16 +3,54 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Redireccionar a la skill de Alexa</title>
+    <title>Login y Redireccionamiento</title>
 </head>
 <body>
-    <h1>Redireccionar a la skill de Alexa</h1>
-    <button onclick="redireccionar()">Abrir skill de Alexa</button>
+    <h1>Ingresar Email y Contraseña</h1>
+    <form id="loginForm">
+        <label for="email">Email:</label><br>
+        <input type="email" id="email" name="email"><br><br>
+        <label for="password">Contraseña:</label><br>
+        <input type="password" id="password" name="password"><br><br>
+        <button type="submit">Iniciar Sesión</button>
+    </form>
 
     <script>
-        function redireccionar() {
-            window.location.href = "https://layla.amazon.com/api/skill/link/M19TM7GXDVJHTG";
-        }
+        document.getElementById("loginForm").addEventListener("submit", function(event) {
+            event.preventDefault(); // Evitar que se envíe el formulario de forma predeterminada
+            
+            // Obtener los valores de email y contraseña
+            var email = document.getElementById("email").value;
+            var password = document.getElementById("password").value;
+
+            // Realizar la solicitud HTTP POST
+            var xhr = new XMLHttpRequest();
+            xhr.open("POST", "https://siliant-identity-prod.azurewebsites.net/connect/token");
+            xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+
+            xhr.onreadystatechange = function() {
+                if (xhr.readyState === XMLHttpRequest.DONE) {
+                    if (xhr.status === 200) {
+                        // Si la solicitud fue exitosa, redirigir al usuario a la skill de Alexa
+                        window.location.href = "https://layla.amazon.com/api/skill/link/M19TM7GXDVJHTG";
+                    } else {
+                        // Si la solicitud falló, mostrar un mensaje de error
+                        alert("Error al iniciar sesión. Por favor, verifica tu email y contraseña.");
+                    }
+                }
+            };
+
+            // Crear el cuerpo de la solicitud con los datos de autenticación
+            var requestBody = "grant_type=password" +
+                                "&scope=openid profile API.read API.write" +
+                                "&client_id=siliant" +
+                                "&client_secret=secret" +
+                                "&username=" + encodeURIComponent(email) +
+                                "&password=" + encodeURIComponent(password);
+            
+            // Enviar la solicitud
+            xhr.send(requestBody);
+        });
     </script>
 </body>
 </html>
