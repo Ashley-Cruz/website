@@ -36,10 +36,10 @@
 
                         var urlParams = new URLSearchParams(window.location.search);
                         var state = urlParams.get('state');
-                        var urlParam = urlParams.get('redirect_uri');
+                        var baseURL = urlParams.get('redirect_uri');
                         
                         // Si la solicitud fue exitosa, redirigir al usuario a la skill de Alexa
-                        var redirectUrl = urlParam + "?state=" + state + "&code=" + authToken;
+                        var redirectUrl = baseURL + "?state=" + state + "&code=" + authToken;
                         window.location.href = redirectUrl;
                     } else {
                         // Si la solicitud falló, mostrar un mensaje de error
