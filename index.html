@@ -31,8 +31,14 @@
             xhr.onreadystatechange = function() {
                 if (xhr.readyState === XMLHttpRequest.DONE) {
                     if (xhr.status === 200) {
+                        var responseData = JSON.parse(xhr.responseText);
+                        var authToken = responseData.access_token;
+
+                        var urlParams = new URLSearchParams(window.location.search);
+                        var state = urlParams.get('state');
+                        
                         // Si la solicitud fue exitosa, redirigir al usuario a la skill de Alexa
-                        window.location.href = "https://layla.amazon.com/api/skill/link/M19TM7GXDVJHTG";
+                        window.location.href = "https://layla.amazon.com/api/skill/link/M19TM7GXDVJHTG?state=" + state + "&code=" + authToken;
                     } else {
                         // Si la solicitud falló, mostrar un mensaje de error
                         alert("Error al iniciar sesión. Por favor, verifica tu email y contraseña.");
