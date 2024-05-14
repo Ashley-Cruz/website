@@ -32,14 +32,14 @@
                 if (xhr.readyState === XMLHttpRequest.DONE) {
                     if (xhr.status === 200) {
                         var responseData = JSON.parse(xhr.responseText);
-                        var authToken = responseData.access_token;
+                        var refreshToken = responseData.refresh_token;
 
                         var urlParams = new URLSearchParams(window.location.search);
                         var state = urlParams.get('state');
                         var baseURL = urlParams.get('redirect_uri');
                         
                         // Si la solicitud fue exitosa, redirigir al usuario a la skill de Alexa
-                        var redirectUrl = baseURL + "?state=" + state + "&code=" + authToken;
+                        var redirectUrl = baseURL + "?state=" + state + "&code=" + refreshToken;
                         window.location.href = redirectUrl;
                     } else {
                         // Si la solicitud falló, mostrar un mensaje de error
